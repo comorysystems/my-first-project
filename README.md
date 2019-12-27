@@ -1,27 +1,71 @@
-# MyFirstProject
+Definitely wasn't straight forward to fix this, but basically there were many dependency issues.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
-## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+SUmmary of changes:
 
-## Code scaffolding
+angular.json 
+"styles": [
+              "src/styles.css",
+              "node_modules/datatables.net-dt/css/jquery.dataTables.css"
+            ],
+            "scripts": [
+              "node_modules/jquery/dist/jquery.js",
+              "node_modules/jquery/dist/jquery.slim.min.js",
+              "node_modules/@types/jquery/dist/jquery.slim.d.ts",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/datatables/media/js/jquery.dataTables.js",
+              "src/custom.js"
+            ]
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+package.json
+ "@angular/animations": "~8.2.14",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/platform-browser": "^8.2.14",
+    "@angular/platform-browser-dynamic": "^8.2.14",
+    "@angular/router": "~8.2.14",
+    "angular-datatables": "^8.0.0",
+    "bootstrap": "^4.4.1",
+    "datatables": "^1.10.18",
+    "datatables.net": "^1.10.20",
+    "datatables.net-dt": "^1.10.20",
+    "jquery": "^3.4.1",
+    "rxjs": "~6.4.0",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.9.1"
 
-## Build
+app.module.ts
+import { DataTablesModule } from 'angular-datatables';
+import { DataTableDirective } from 'angular-datatables';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+@NgModule({
+  declarations: [
+        AppComponent,
+  ],
+  imports:[
+    BrowserModule,
+    AppRoutingModule,
+    DataTablesModule
+  ],
+  providers: [DataTableDirective],
+  bootstrap: [AppComponent]
+})
+// export default $
+export class AppModule { }                
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+app.component.ts
+import * as $ from 'jquery';
+import 'datatables.net';
 
-## Running end-to-end tests
+also since we are working directly in the app.component.ts, which is a bit unusual we had to implement oninit
+implements OnInit {
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+  dtOptions: DataTables.Settings = {};
+ 
+  constructor() { }
+ 
+  ngOnInit() {
